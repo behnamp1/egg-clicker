@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Just an Egg</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #ffffff;
+      color: #222222;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 14px;
+    }
+
+    h1 {
+      font-size: 25px;
+      font-weight: 500;
+      margin: 0;
+    }
+
+    .subtitle {
+      color: #999999;
+      font-size: 13px;
+    }
+
+    .egg-button {
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      padding: 12px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .egg {
+      width: 180px;
+      display: block;
+      filter: drop-shadow(0 12px 12px rgba(0,0,0,0.08));
+    }
+
+    .egg-button.clicked .egg {
+      animation: eggBounce 350ms ease;
+    }
+
+    @keyframes eggBounce {
+      0%   { transform: rotate(0) scale(1); }
+      35%  { transform: rotate(-4deg) scale(1.04); }
+      70%  { transform: rotate(3deg) scale(0.99); }
+      100% { transform: rotate(0) scale(1); }
+    }
+
+    .counter {
+      font-size: 42px;
+      font-weight: 500;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .counter-label {
+      color: #aaaaaa;
+      font-size: 10px;
+      letter-spacing: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .egg-button.clicked .egg {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="container">
+
+    <h1>یک تخم‌مرغ ساده.</h1>
+    <p class="subtitle">برای شمردن، روی تخم‌مرغ کلیک کن.</p>
+
+    <button
+      class="egg-button"
+      id="eggButton"
+      aria-label="روی تخم‌مرغ کلیک کن"
+    >
+      <svg class="egg" viewBox="0 0 240 300"
+           xmlns="http://www.w3.org/2000/svg">
+
+        <defs>
+          <linearGradient id="eggGradient" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="100%" stop-color="#eeeeeb"/>
+          </linearGradient>
+        </defs>
+
+        <path
+          d="M120 12
+             C80 12 40 100 40 166
+             C40 236 76 282 120 282
+             C164 282 200 236 200 166
+             C200 100 160 12 120 12 Z"
+          fill="url(#eggGradient)"
+          stroke="#e7e7e4"
+          stroke-width="1.5"
+        />
+
+        <path
+          d="M91 48 C69 83 59 119 60 151"
+          stroke="#ffffff"
+          stroke-width="5"
+          stroke-linecap="round"
+          opacity="0.8"
+          fill="none"
+        />
+
+      </svg>
+    </button>
+
+    <div class="counter" id="count">0</div>
+    <div class="counter-label">تعداد کلیک‌ها</div>
+
+  </main>
+
+  <script>
+    const eggButton = document.getElementById("eggButton");
+    const counter = document.getElementById("count");
+
+    let clicks = Number(localStorage.getItem("eggClicks")) || 0;
+
+    counter.textContent = clicks;
+
+    eggButton.addEventListener("click", () => {
+      clicks++;
+
+      localStorage.setItem("eggClicks", clicks);
+      counter.textContent = clicks;
+
+      eggButton.classList.remove("clicked");
+
+      void eggButton.offsetWidth;
+
+      eggButton.classList.add("clicked");
+    });
+  </script>
+
+</body>
+</html>
